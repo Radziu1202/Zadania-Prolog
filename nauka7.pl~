@@ -1,0 +1,39 @@
+dec_to_bin(0,[]):-!.
+dec_to_bin(X,LWY):-X1 is X mod 2, X2 is X//2,dec_to_bin(X2,T2),append(T2,[X1],LWY).
+
+binarnie([],[]):-!.
+binarnie([H|T],[X1|X2]):-dec_to_bin(H,X1),binarnie(T,X2).
+zlicz([],1,[]):-!.
+zlicz([X1,X2|T],N,LWY):-X1=:=X2,!,N2 is N+1,zlicz([X2|T],N2,LWY).
+zlicz([_|T],M,[M|T1]):-M1 is 1,zlicz(T,M1,T1).
+
+zliczaj([],[]):-!.
+zliczaj([H|T],[X1|X2]):-zlicz(H,1,X1),zliczaj(T,X2).
+
+odwroc([X],[X]):-!.
+odwroc([H|T],LWY):-odwroc(T,X1),append(X1,[H],LWY),!.
+
+lacz([],0):-!.
+lacz([H|T],S):-lacz(T,S1),S is S1 +10+H.
+
+
+polacz([],[]):-!.
+polacz([H|T],[X1|X2]):-odwroc(H,H1),lacz(H1,X1),polacz(T,X2).
+
+
+mniejszyniemniejszy([],_,[],[]):-!.
+mniejszyniemniejszy([H|T],X,[H|T1],N):-H<X,mniejszyniemniejszy(T,X,T1,N).
+mniejszyniemniejszy([H|T],X,M,[H|T1]):-H>=X,mniejszyniemniejszy(T,X,M,T1).
+
+
+qs([],[]):-!.
+qs([H|T],LWY):-mniejszyniemniejszy(T,H,M,N),qs(M,X1),qs(N,X2),append(X1,[H|X2],LWY),!.
+
+insertsort2([],[],[],[]):-!.
+insertsort2([H1|T1],[H2|T2],X,Y):-insertsort2(T1,T2,X1,Y1),insert2(H1,H2,X1,Y1,X,Y).
+insert2(H1,H2,[],[],[H1],[H2]):-!.
+insert2(X1,X2,[H1|T1],[H2|T2],[X1,H1|T1],[X2,H2|T2]):-X2=<H2,!.
+insert2(X1,X2,[H1|T1],[H2|T2],[H1|T3],[H2|T4]):-insert2(X1,X2,T1,T2,T3,T4).
+
+
+zadanie(LWE,LWY):-binarnie(LWE,B),zliczaj(B,Z),polacz(Z,P),qs(P,P1),insertsort(LWE,P1,LWY,_).

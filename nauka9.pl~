@@ -1,0 +1,19 @@
+dzielniki(X,N,[]):-N>=X,!.
+dzielniki(X,N,[N|T]):- X mod N =:= 0,!,N1 is N+1,dzielniki(X,N1,T).
+dzielniki(X,N,LWY):-N1 is N+1,dzielniki(X,N1,LWY),!.
+
+wszystkie([],[]):-!.
+wszystkie([H|T],[X1|X2]):-dzielniki(H,1,X1),wszystkie(T,X2).
+
+zsumujNP([],0):-!.
+zsumujNP([H|T],ODP):-H mod 2 =:=1, zsumujNP(T,X2),ODP is H + X2.
+zsumujNP([_|T],ODP):-zsumujNP(T,ODP),!.
+
+
+zsumujP([],0):-!.
+zsumujP([H|T],ODP):-H mod 2 =:=0, zsumujP(T,X2),ODP is H + X2.
+zsumujP([_|T],ODP):-zsumujP(T,ODP),!.
+
+sumy([],[]):-!.
+sumy([H|T],[X1|X2]):-H mod 2 =:= 0,dzielniki(H,1,H1),zsumujP(H1,X1),sumy(T,X2),!.
+sumy([H|T],[X1|X2]):-H mod 2 =:= 1,dzielniki(H,1,H1), zsumujNP(H1,X1),sumy(T,X2),!.

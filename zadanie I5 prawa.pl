@@ -1,0 +1,39 @@
+
+max([],R,R):-!.
+max([H|T],WK,R):-H>WK,max(T,H,R),!.
+max([_|T],WK,R):-max(T,WK,R),!.
+max([H|T],R):-max(T,H,R).
+
+
+min([],R,R):-!.
+min([H|T],WK,R):-H<WK,min(T,H,R),!.
+min([_|T],WK,R):-min(T,WK,R),!.
+min([H|T],R):-min(T,H,R).
+
+onlyX([],[]):-!.
+onlyX([H|T],LWY):-append([X],[_],H),onlyX(T,X2),append([X],X2,LWY),!.
+
+onlyY([],[]):-!.
+onlyY([H|T],LWY):-append([_],[Y],H),onlyY(T,X2),append([Y],X2,LWY),!.
+
+middle(LWE,P):-onlyX(LWE,XS),
+	max(XS,XD),
+	min(XS,XM),
+	onlyY(LWE,YS),
+	max(YS,YD),
+	min(YS,YM),
+	X is div((XD+XM),2),
+	Y is div((YD+YM),2),
+	append([X],[Y],P),!.
+
+distance([X,Y],[XP,YP],D):-XD is abs(X-XP), YD is abs(Y-YP), D is ((XD^2)+(YD^2)),!.
+
+distances([],[],_):-!.
+distances([H|T],LWY,P):-distance(H,P,D),distances(T,X2,P),append([D],X2,LWY),!.
+
+ktory([],_,_,[]):-!.
+ktory([H|_],P,M,K):-distance(H,P,D),D=:=M,K=H,!.
+ktory([H|T],P,M,K):-distance(H,P,D),D=\=M,ktory(T,P,M,K),!.
+
+
+zad(LWE,WYN):-middle(LWE,P),distances(LWE,DIS,P),max(DIS,M),ktory(LWE,P,M,WYN).

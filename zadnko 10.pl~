@@ -1,0 +1,28 @@
+dectobin(0,[]):-!.
+dectobin(X,WYN):-B1 is mod(X,2),X1 is X//2, dectobin(X1,B2),append(B2,[B1],WYN).
+
+binarnie([],[]):-!.
+binarnie([H|T],LWY):-dectobin(H,X1),binarnie(T,X2),append([X1],X2,LWY).
+
+usun([X],[X]):-!.
+usun([X,X|T],WYN):-usun([X|T],WYN),!.
+usun([H1,H2|T],[H1|T1]):-H1 \=  H2, usun([H2|T],T1).
+powtorzenia([],[]):-!.
+powtorzenia([H|T],LWY):-usun(H,X1),powtorzenia(T,X2),append([X1],X2,LWY).
+
+
+bintodec([],_,0):-!.
+bintodec([H|T],N,WYN):-N1 is N-1,bintodec(T,N1,S1), WYN is S1+ H*2^N.
+
+nadziesietne([],[]):-!.
+nadziesietne([H|T],LWY):-length(H,N),N1 is N-1,bintodec(H,N1,X),nadziesietne(T,X2),append([X],X2,LWY).
+
+
+insert(X1,Y1,[],[],[X1],[Y1]):-!.
+insert(X1,X2,[H1|T1],[H2|T2],[X1,H1|T1],[X2,H2|T2]):-X2=<H2,!.
+insert(X1,X2,[H1|T1],[H2|T2],[H1|T3],[H2|T4]):-insert(X1,X2,T1,T2,T3,T4).
+insertsort([],[],[],[]):-!.
+insertsort([H1|T1],[H2|T2],X,Y):-insertsort(T1,T2,X1,Y1),insert(H1,H2,X1,Y1,X,Y).
+
+zad(LWE,LWY):-binarnie(LWE,B),powtorzenia(B,P),nadziesietne(P,D),insertsort(LWE,D,LWY,_).
+

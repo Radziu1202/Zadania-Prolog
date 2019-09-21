@@ -1,0 +1,33 @@
+zawiera(A,[X,Y]):-A=<Y,A>=X.
+
+punkty([],_,[]):-!.
+punkty([H|T],P,[H|X2]):-zawiera(H,P),punkty(T,P,X2).
+punkty([_|T],P,X2):-punkty(T,P,X2),!.
+
+lista(_,[],[]):-!.
+lista(LWE,[H|T],[X1|X2]):-punkty(LWE,H,X1),lista(LWE,T,X2).
+
+srodek([X1,X2],X):-X is (X1 +X2)/2,!.
+srodek([X],X):-!.
+srodek([_|T],X):-append(N,[_],T),srodek(N,X).
+
+srodki([],[]):-!.
+srodki([H|T],[X1|X2]):-srodek(H,X1),srodki(T,X2).
+
+najdalszy([A],_,A).
+najdalszy([H|T],P,H):-najdalszy(T,P,X2),abs(H-P)>=abs(X2-P).
+najdalszy([H|T],P,X2):-najdalszy(T,P,X2),abs(H-P)<abs(X2-P).
+
+najdalsze([],[],[]):-!.
+najdalsze([H1|T1],[H2|T2],[X1|X2]):-najdalszy(H1,H2,X1),najdalsze(T1,T2,X2).
+roznice([],[],[]):-!.
+roznice([H1|T1],[H2|T2],[X1|X2]):-X1 is abs(H1-H2),roznice(T1,T2,X2).
+
+test(PUNKTY,LWE,LWY):-lista(LWE,PUNKTY,ZAW),srodki(ZAW,SR),najdalsze(ZAW,SR,NAJD),roznice(NAJD,SR,LWY).
+
+min([],H,H):-!.
+min([H|T],WK,R):-H<WK,min(T,H,R).
+min([_|T],WK,R):-min(T,WK,R).
+min([H|T],R):-min(T,H,R).
+
+zadanie(P,LWE,ODP):-test(P,LWE,LWY),min(LWY,ODP).

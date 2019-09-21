@@ -1,0 +1,22 @@
+srodek([X,Y],S):-S is (X+Y)/2.
+
+srodki([],[]):-!.
+srodki([H|T],[X1|X2]):-srodek(H,X1),srodki(T,X2).
+
+odleglosc(X,Y,D):-D is abs(X-Y).
+
+odleglosci(_,[],[]):-!.
+odleglosci(X,[H|T],[D1|D2]):-X\=H,odleglosc(X,H,D1),odleglosci(X,T,D2).
+odleglosci(X,[_|T],LWY):-odleglosci(X,T,LWY),!.
+
+min([],R,R):-!.
+min([H|T],WK,R):-H<WK,min(T,H,R).
+min([_|T],WK,R):-min(T,WK,R).
+min([H|T],R):-min(T,H,R).
+
+najmniejsze([],_,[]):-!.
+najmniejsze([H|T],LWE,[D2|D3]):-odleglosci(H,LWE,D1),min(D1,D2),najmniejsze(T,LWE,D3).
+najmniejsze(LWE,LWY):-najmniejsze(LWE,LWE,LWY),!.
+
+
+test(LWE,LWY):-srodki(LWE,SR),najmniejsze(SR,LWY).

@@ -1,0 +1,34 @@
+szesna(0,[]):-!.
+szesna(X,WYN):-(X mod 16) =:= 15,S1 is "F",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):-(X mod 16) =:= 14,S1 is "E",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):-(X mod 16) =:= 13,S1 is "D",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):-(X mod 16) =:= 12,S1 is "C",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):-(X mod 16) =:= 11,S1 is "B",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):-(X mod 16) =:= 10,S1 is "A",X2 is X//16,  szesna(X2,S2),append(S2,[S1],WYN).
+szesna(X,WYN):- S1 is (X mod 16), X2 is X//16, szesna(X2,S2),append(S2,[S1],WYN).
+szesnastkowo([],[]):-!.
+szesnastkowo([H|T],LWY):-szesna(H,S1),szesnastkowo(T,S2),append([S1],S2,LWY).
+
+usun([],[]):-!.
+usun([H|T],LWY):-H <10,usun(T,X),append([H],X,LWY).
+usun([_|T],T1):-usun(T,T1).
+
+usuwanie([],[]):-!.
+usuwanie([H|T],LWY):-usun(H,S1),usuwanie(T,S2),append([S1],S2,LWY).
+
+lacz([],0):-!.
+lacz([H|T],S):-lacz(T,S1), S is 10*S1 +H.
+odwroc([],[]):-!.
+odwroc([H|T],LWY):-odwroc(T,X1),append(X1,[H],LWY).
+polacz([],[]):-!.
+polacz([H|T],LWY):-odwroc(H,L1),polacz(T,L2),append([L1],L2,LWY).
+
+
+insert(H1,H2,[],[],[H1],[H2]):-!.
+insert(X1,X2,[H1|T1],[H2|T2],[X1,H1|T1],[X2,H2|T2]):-X2 =< H2.
+insert(X1,X2,[H1|T1],[H2|T2],[H1|T3],[H2|T4]):-insert(X1,X2,T1,T2,T3,T4).
+insertsort([],[],[],[]):-!.
+insertsort([H1|T1],[H2|T2],X,Y):-insertsort(T1,T2,X1,Y1),insert(H1,H2,X1,Y1,X,Y).
+
+
+zad(LWE,LWY):-szesnastkowo(LWE,SZ),usuwanie(SZ,US),polacz(US,POL),insertsort(LWE,POL,LWY,_).

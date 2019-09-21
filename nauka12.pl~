@@ -1,0 +1,15 @@
+dec_to_hex(0,[]):-!.
+dec_to_hex(X,LWY):-X mod 16 =:= 10,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"A",LWY).
+dec_to_hex(X,LWY):-X mod 16 =:= 11,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"B",LWY).
+dec_to_hex(X,LWY):-X mod 16 =:= 12,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"C",LWY).
+dec_to_hex(X,LWY):-X mod 16 =:= 13,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"D",LWY).
+dec_to_hex(X,LWY):-X mod 16 =:= 14,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"E",LWY).
+dec_to_hex(X,LWY):-X mod 16 =:= 15,!, X1 is X//16,dec_to_hex(X1,Y),append(Y,"F",LWY).
+dec_to_hex(X,LWY):-H is mod(X,16),H1 is X//16,dec_to_hex(H1,Y),append(Y,[H],LWY).
+
+usun([],[]):-!.
+usun([H|T],[H|T1]):-H<10,!,usun(T,T1).
+usun([_|T],LWY):-usun(T,LWY),!.
+
+usuwanie([],[]):-!.
+usuwanie([H|T],[X1|X2]):-usun(H,X1),usuwanie(T,X2).

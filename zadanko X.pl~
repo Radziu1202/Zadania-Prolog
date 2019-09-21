@@ -1,0 +1,42 @@
+rozbij(0,[]):-!.
+rozbij(X,[H|T]):-H is mod(X,10),X2 is X//10,rozbij(X2,T).
+
+
+rozbijaj([],[]):-!.
+rozbijaj([H|T],[H1|T1]):-rozbij(H,H1),rozbijaj(T,T1).
+
+odwroc([],[]):-!.
+odwroc([H|T],WYN):-odwroc(T,X2),append(X2,[H],WYN).
+
+odwracaj([],[]):-!.
+odwracaj([H|T],LWY):-odwroc(H,H1),odwracaj(T,T1),append([H1],T1,LWY).
+
+
+usun([X],[X]):-!.
+usun([X,Y|T],LWY):-Y=<X,!, usun([X|T],LWY).
+usun([H1,Y|T],[H1|T1]):-usun([Y|T],T1).
+mono([],[]):-!.
+mono([H|T],LWY):-usun(H,X1),mono(T,X2),append([X1],X2,LWY).
+
+lacz([],0):-!.
+lacz([H|T],WYN):-lacz(T,S1),WYN is 10*S1 + H.
+
+polacz([],[]):-!.
+polacz([H|T],LWY):-odwracaj(H,H1),lacz(H1,X1),polacz(T,X3),append([X1],X3,LWY).
+
+
+
+
+
+
+insert(X,Y,[],[],[X],[Y]):-!.
+insert(X,Y,[H1|T1],[H2|T2],[X,H1|T1],[Y,H2|T2]):-Y=<H2,!.
+insert(X,Y,[H1|T1],[H2|T2],[H1|T3],[H2|T4]):-insert(X,Y,T1,T2,T3,T4).
+
+insertsort([],[],[],[]):-!.
+insertsort([H1|T1],[H2|T2],X,Y):-insertsort(T1,T2,X1,Y1),insert(H1,H2,X1,Y1,X,Y).
+
+zad(LWE,LWY):-rozbijaj(LWE,X1),odwracaj(X1,X2),mono(X2,X3),polacz(X3,X4),insertsort(LWE,X4,LWY,_).
+
+
+

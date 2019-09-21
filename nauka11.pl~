@@ -1,0 +1,4 @@
+odleglosc([XA,YA],[XB,YB],D):-
+	X is abs(XA-XB),
+	Y is abs(YA-YB),
+	D is sqrt((X**2) + (Y**2)).

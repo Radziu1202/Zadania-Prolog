@@ -1,0 +1,34 @@
+dec_to_bin(0,[]):-!.
+dec_to_bin(X,LWY):-X1 is X mod 2,X2 is X//2,dec_to_bin(X2,L2),append(L2,[X1],LWY).
+
+binarnie([],[]):-!.
+binarnie([H|T],[X1|X2]):-dec_to_bin(H,X1),binarnie(T,X2).
+
+jedynki([],[]):-!.
+jedynki([H|T],[H|X2]):-H =:=1,jedynki(T,X2),!.
+jedynki([_|T],LWY):-jedynki(T,LWY),!.
+
+zera([],[]):-!.
+zera([H|T],[H|X2]):-H =:=0,zera(T,X2),!.
+zera([_|T],LWY):-zera(T,LWY),!.
+
+
+nowa_liczba(Y,LWY):-dec_to_bin(Y,X),zera(X,Z),jedynki(X,J),append(J,Z,LWY).
+liczby([],[]):-!.
+liczby([H|T],[X1|X2]):-nowa_liczba(H,X1),liczby(T,X2).
+
+len([],0):-!.
+len([_|T],N):-length(T,N1),N is N1+1.
+
+bin_to_dec([],0):-!.
+bin_to_dec([H|T],X):-len([H|T],N),N1 is N-1,X1 is H*(2**N1),bin_to_dec(T,X2),X is X1+X2.
+
+roznica([H1],[_],H1):-!.
+roznica([H1|T1],[H2|T2],H1):-X is abs(H1-H2),roznica(T1,T2,X1),X>=X1.
+roznica([H1|T1],[H2|T2],X1):-X is abs(H1-H2),roznica(T1,T2,X1),X<X1.
+
+decymalnie([],[]):-!.
+decymalnie([H|T],[X1|X2]):-bin_to_dec(H,X1),decymalnie(T,X2).
+
+
+zadanie(LWE,ODP):-liczby(LWE,L),decymalnie(L,D),roznica(LWE,D,ODP).

@@ -1,0 +1,7 @@
+lengt([],0):-!.
+lengt([_|T],L):-lengt(T,X2),L is X2 +1.
+
+
+uniq([],[]):-!.
+uniq([H|T],T1):-member(H,T),!,uniq(T,T1).
+uniq([H|T],[H|T1]):-uniq(T,T1),!.
